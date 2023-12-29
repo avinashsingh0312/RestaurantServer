@@ -1,0 +1,148 @@
+<!-- adminDashboard.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+            body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    padding: 20px;
+    background-color: #3498db;
+    margin: 0;
+}
+
+form {
+    margin: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+select,
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+h2 {
+    margin: 20px 0;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+p {
+    color: #888;
+    margin-top: 20px;
+}
+
+/* Add additional styles as needed */
+
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <!-- View Materials Form -->
+    <h2>View Materials</h2>
+    <form action="/dashboard/admin/view-materials" method="post">
+        <label for="selectedRestaurant">Select Restaurant:</label>
+        <select id="selectedRestaurant" name="selectedRestaurant" required>
+            <!-- Populate this dropdown with restaurant options -->
+            <% restaurants.forEach(restaurant => { %>
+                <option value="<%= restaurant._id %>"><%= restaurant.name %></option>
+            <% }); %>
+        </select>
+
+        <button type="submit">View Materials</button>
+    </form>
+
+    <!-- Display Materials -->
+    <% if(materials && materials.length > 0) { %>
+        <h2>Materials</h2>
+        <ul>
+            <% materials.forEach(material => { %>
+                <li>
+                    <%= material.materialName %>: <%= material.quantity %>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No materials found.</p>
+    <% } %>
+
+    <!-- Transfer Materials Form -->
+    <h2>Transfer Materials</h2>
+    <form action="/dashboard/admin/transfer-materials" method="post">
+        <label for="sourceRestaurant">Source Restaurant:</label>
+        <select id="sourceRestaurant" name="sourceRestaurant" required>
+            <!-- Populate this dropdown with restaurant options -->
+            <% restaurants.forEach(restaurant => { %>
+                <option value="<%= restaurant._id %>"><%= restaurant.name %></option>
+            <% }); %>
+        </select>
+
+        <label for="destinationRestaurant">Destination Restaurant:</label>
+        <select id="destinationRestaurant" name="destinationRestaurant" required>
+            <!-- Populate this dropdown with restaurant options -->
+            <% restaurants.forEach(restaurant => { %>
+                <option value="<%= restaurant._id %>"><%= restaurant.name %></option>
+            <% }); %>
+        </select>
+
+        <label for="materialForTransfer">Material to Transfer:</label>
+        <select id="materialForTransfer" name="materialForTransfer" required>
+            <!-- Populate this dropdown with materials from the source restaurant -->
+            <% sourceMaterials.forEach(material => { %>
+                <option value="<%= material._id %>"><%= material.materialName %> - <%= material.quantity %></option>
+            <% }); %>
+        </select>
+
+        <label for="transferQuantity">Quantity to Transfer:</label>
+        <input type="number" id="transferQuantity" name="transferQuantity" required>
+
+        <button type="submit">Transfer Materials</button>
+    </form>
+</body>
+</html>
